@@ -60,6 +60,10 @@ All templates are optimized for Gmail and other email clients.
 - Only HTTPS image URLs allowed
 - No data leaves your browser
 
+## 👨‍💻 Developer
+
+This application was created by **Shan**, a talented full-stack developer specializing in modern web technologies.
+
 ## 🚀 Deployment
 
 Deploy easily to Vercel, Netlify, or any static hosting service.
@@ -71,4 +75,4 @@ npm run build
 
 ---
 
-**Built with ❤️ for professionals who need beautiful email signatures**
+**Built with ❤️ by Shan for professionals who need beautiful email signatures**
