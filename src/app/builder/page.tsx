@@ -71,7 +71,7 @@ export default function BuilderPage() {
               Built with Next.js, TypeScript, and TailwindCSS
             </p>
             <p className="text-sm text-gray-500 mt-2">
-              Phase 1: Client-side only • No login required • Data saved locally
+              Developed by Shan • Phase 1: Client-side only • No login required • Data saved locally
             </p>
           </div>
         </div>

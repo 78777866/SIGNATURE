@@ -118,6 +118,11 @@ export default function TestTemplates() {
             />
           </div>
         </div>
+        
+        {/* Footer */}
+        <footer className="mt-12 text-center text-gray-600 text-sm">
+          <p>Developed by Shan • Email Signature Generator</p>
+        </footer>
       </div>
     </div>
   );
