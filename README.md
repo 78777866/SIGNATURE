@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📧 SighCraft - Email Signature Generator
 
-## Getting Started
+Create professional email signatures in seconds. No login required, completely free, with real-time preview.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue?style=for-the-badge&logo=typescript)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0-38B2AC?style=for-the-badge&logo=tailwind-css)
+
+## ✨ Features
+
+- 🚀 **Real-time Preview** - See changes instantly as you type
+- 🔒 **100% Client-side** - No server required, your data stays private
+- 💾 **Local Storage** - Save signatures locally for later use
+- 📱 **Mobile Responsive** - Works on all devices
+- 🎨 **5+ Professional Templates** - Beautiful, email-client compatible designs
+- 📋 **Easy Export** - Copy HTML or download as file
+
+## 🛠️ Tech Stack
+
+- **Next.js 15** with App Router
+- **TypeScript** for type safety
+- **TailwindCSS** for styling
+- **Zustand** for state management
+- **shadcn/ui** components
+
+## 🚀 Quick Start
 
 ```bash
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit `http://localhost:3000` to start creating signatures.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🎨 Signature Templates
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This version includes 5 visually distinct, production-ready templates:
 
-## Learn More
+1. **Modern Accent Bar** - Colored accent bars for visual separation
+2. **Minimalist Centered Layout** - Clean centered design
+3. **Dual Tone Split Background** - Contrasting color sections
+4. **Icon-Focused Contact Strip** - Icon-based contact information
+5. **Bold Color Header Style** - Vibrant gradient header
 
-To learn more about Next.js, take a look at the following resources:
+All templates are optimized for Gmail and other email clients.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📤 Export Options
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Copy Rendered Signature** - Direct copy for Gmail
+- **Copy HTML Code** - Raw HTML for other email clients
+- **Copy JSON** - Data format for backup
+- **Download HTML** - Save as HTML file
 
-## Deploy on Vercel
+## 🛡️ Security
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- All HTML is sanitized with DOMPurify
+- Only HTTPS image URLs allowed
+- No data leaves your browser
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🚀 Deployment
+
+Deploy easily to Vercel, Netlify, or any static hosting service.
+
+```bash
+# Build for production
+npm run build
+```
+
+---
+
+**Built with ❤️ for professionals who need beautiful email signatures**
