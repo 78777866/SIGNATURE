@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useSignatureStore } from '@/store/signatureStore';
 import { generateSignatureHtml } from '@/utils/generateSignatureHtml';
 import { TemplateGallery } from '@/components/TemplateGallery';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -14,8 +15,8 @@ import {
   Save,
   CheckCircle,
   Info,
-  Sparkles,
-  Palette
+  Palette,
+  Keyboard
 } from 'lucide-react';
 
 export function Toolbar() {
@@ -23,7 +24,61 @@ export function Toolbar() {
   const [copiedStates, setCopiedStates] = useState<{[key: string]: boolean}>({});
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [templateGalleryOpen, setTemplateGalleryOpen] = useState(false);
+  const [shortcutsDialogOpen, setShortcutsDialogOpen] = useState(false);
   const [signatureName, setSignatureName] = useState('');
+
+  // Setup keyboard shortcuts
+  useKeyboardShortcuts([
+    {
+      key: 'c',
+      ctrlKey: true,
+      metaKey: true,
+      description: 'Copy rendered signature',
+      callback: (e) => {
+        e.preventDefault();
+        copyRenderedSignature();
+      }
+    },
+    {
+      key: 's',
+      ctrlKey: true,
+      metaKey: true,
+      description: 'Save signature',
+      callback: (e) => {
+        e.preventDefault();
+        setSaveDialogOpen(true);
+      }
+    },
+    {
+      key: 'r',
+      ctrlKey: true,
+      metaKey: true,
+      description: 'Reset form',
+      callback: (e) => {
+        e.preventDefault();
+        handleReset();
+      }
+    },
+    {
+      key: 'd',
+      ctrlKey: true,
+      metaKey: true,
+      description: 'Download HTML',
+      callback: (e) => {
+        e.preventDefault();
+        downloadHtml();
+      }
+    },
+    {
+      key: '?',
+      shiftKey: true,
+      description: 'Show keyboard shortcuts',
+      callback: (e) => {
+        e.preventDefault();
+        setShortcutsDialogOpen(true);
+      }
+    }
+  ]);
 
   // Helper function to show copied feedback
   const showCopiedFeedback = (key: string) => {
@@ -60,7 +115,7 @@ export function Toolbar() {
         if (copied) {
           showCopiedFeedback('rendered');
         }
-      } catch (err) {
+      } catch {
         console.warn('execCommand failed, trying Clipboard API fallback');
       }
       
@@ -73,7 +128,7 @@ export function Toolbar() {
           ]);
           showCopiedFeedback('rendered');
           copied = true;
-        } catch (err) {
+        } catch {
           console.warn('Clipboard API failed');
         }
       }
@@ -84,7 +139,7 @@ export function Toolbar() {
           await navigator.clipboard.writeText(html);
           showCopiedFeedback('rendered');
           copied = true;
-        } catch (err) {
+        } catch {
           console.warn('Clipboard writeText failed');
         }
       }
@@ -249,6 +304,16 @@ export function Toolbar() {
               <RotateCcw className="w-4 h-4" />
               Reset
             </Button>
+
+            <Button
+              onClick={() => setShortcutsDialogOpen(true)}
+              variant="outline"
+              className="flex items-center gap-2"
+              title="Keyboard Shortcuts (Shift+?)"
+            >
+              <Keyboard className="w-4 h-4" />
+              Shortcuts
+            </Button>
           </div>
           
           {/* Tooltip for Copy Rendered Signature */}
@@ -272,12 +337,12 @@ export function Toolbar() {
               <div>
                 <p className="font-medium">Gmail Signature Setup:</p>
                 <ol className="mt-1 list-decimal list-inside space-y-1">
-                  <li>Click "Copy Rendered Signature" above (recommended)</li>
+                  <li>Click &quot;Copy Rendered Signature&quot; above (recommended)</li>
                   <li>In Gmail, go to Settings → See all settings → General</li>
-                  <li>Scroll to "Signature" section</li>
-                  <li><strong>Important:</strong> Switch to "Rich Text" mode if available</li>
+                  <li>Scroll to &quot;Signature&quot; section</li>
+                  <li><strong>Important:</strong> Switch to &quot;Rich Text&quot; mode if available</li>
                   <li>Paste the signature (Ctrl+V or Cmd+V)</li>
-                  <li>Click "Save Changes" at the bottom</li>
+                  <li>Click &quot;Save Changes&quot; at the bottom</li>
                 </ol>
                 <p className="mt-2 text-blue-700">
                   <strong>Note:</strong> If pasting shows plain text, try pasting into a text editor first, then copy and paste again.
@@ -328,6 +393,69 @@ export function Toolbar() {
                     Save
                   </Button>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Keyboard Shortcuts Dialog */}
+      {shortcutsDialogOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <Card className="w-full max-w-lg">
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  <Keyboard className="w-5 h-5" />
+                  Keyboard Shortcuts
+                </h3>
+                <Button
+                  variant="ghost"
+                  onClick={() => setShortcutsDialogOpen(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </Button>
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center py-2 border-b">
+                  <span className="text-sm text-gray-700">Copy rendered signature</span>
+                  <kbd className="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded">
+                    {typeof window !== 'undefined' && navigator.platform.toUpperCase().indexOf('MAC') >= 0 ? '⌘' : 'Ctrl'} + C
+                  </kbd>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b">
+                  <span className="text-sm text-gray-700">Save signature</span>
+                  <kbd className="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded">
+                    {typeof window !== 'undefined' && navigator.platform.toUpperCase().indexOf('MAC') >= 0 ? '⌘' : 'Ctrl'} + S
+                  </kbd>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b">
+                  <span className="text-sm text-gray-700">Reset form</span>
+                  <kbd className="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded">
+                    {typeof window !== 'undefined' && navigator.platform.toUpperCase().indexOf('MAC') >= 0 ? '⌘' : 'Ctrl'} + R
+                  </kbd>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b">
+                  <span className="text-sm text-gray-700">Download HTML</span>
+                  <kbd className="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded">
+                    {typeof window !== 'undefined' && navigator.platform.toUpperCase().indexOf('MAC') >= 0 ? '⌘' : 'Ctrl'} + D
+                  </kbd>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-sm text-gray-700">Show this dialog</span>
+                  <kbd className="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded">
+                    Shift + ?
+                  </kbd>
+                </div>
+              </div>
+              <div className="mt-4 pt-4 border-t">
+                <Button
+                  onClick={() => setShortcutsDialogOpen(false)}
+                  className="w-full"
+                >
+                  Got it!
+                </Button>
               </div>
             </CardContent>
           </Card>
