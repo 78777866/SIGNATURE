@@ -19,14 +19,6 @@ export function SignaturePreview() {
     }
   }, [previewHtml]);
 
-  // Function to get the rendered content for copying
-  const getRenderedContent = () => {
-    if (iframeRef.current) {
-      return iframeRef.current;
-    }
-    return null;
-  };
-
   return (
     <Card className="w-full h-fit">
       <CardHeader>

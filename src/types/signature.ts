@@ -7,6 +7,10 @@ export interface SignatureData {
   website?: string;
   address?: string;
   logoUrl: string;
+  linkedinUrl?: string;
+  twitterUrl?: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
 }
 
 export interface SavedSignature {
@@ -28,6 +32,10 @@ export interface ValidationErrors {
   website?: string;
   address?: string;
   logoUrl?: string;
+  linkedinUrl?: string;
+  twitterUrl?: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
 }
 
 export type LocalStorageKey = 'signatures_v1';

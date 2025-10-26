@@ -2,11 +2,10 @@
 
 import { useState } from 'react';
 import { useSignatureStore } from '@/store/signatureStore';
-import { SignatureTemplate, signatureTemplates, templateCategories, getTemplatesByCategory } from '@/utils/signatureTemplates';
+import { SignatureTemplate, templateCategories, getTemplatesByCategory } from '@/utils/signatureTemplates';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
-  Calendar, 
   MapPin, 
   Phone, 
   Globe, 
@@ -195,7 +194,7 @@ export function TemplateGallery({ onClose }: TemplateGalleryProps) {
           {/* Footer */}
           <div className="border-t pt-4 text-center text-sm text-gray-600">
             <p>
-              Don't see what you're looking for? Start with any template and customize it to your needs.
+              Don&apos;t see what you&apos;re looking for? Start with any template and customize it to your needs.
             </p>
           </div>
         </CardContent>

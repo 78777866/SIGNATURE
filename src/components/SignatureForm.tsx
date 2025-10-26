@@ -3,10 +3,11 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSignatureStore } from '@/store/signatureStore';
 import { SignatureData } from '@/types/signature';
 import { isAnimatedGif } from '@/utils/isAnimatedGif';
+import { debounce } from '@/utils/debounce';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -35,6 +36,30 @@ const signatureSchema = z.object({
       const allowedExtensions = ['.png', '.jpg', '.jpeg', '.gif', '.webp'];
       return allowedExtensions.some(ext => url.toLowerCase().includes(ext));
     }, 'Logo must be .png, .jpg, .jpeg, .gif, or .webp'),
+  linkedinUrl: z.string()
+    .optional()
+    .refine((url) => {
+      if (!url) return true;
+      return url.startsWith('https://');
+    }, 'LinkedIn URL must start with https://'),
+  twitterUrl: z.string()
+    .optional()
+    .refine((url) => {
+      if (!url) return true;
+      return url.startsWith('https://');
+    }, 'Twitter URL must start with https://'),
+  facebookUrl: z.string()
+    .optional()
+    .refine((url) => {
+      if (!url) return true;
+      return url.startsWith('https://');
+    }, 'Facebook URL must start with https://'),
+  instagramUrl: z.string()
+    .optional()
+    .refine((url) => {
+      if (!url) return true;
+      return url.startsWith('https://');
+    }, 'Instagram URL must start with https://'),
 });
 
 type FormData = z.infer<typeof signatureSchema>;
@@ -79,7 +104,16 @@ export function SignatureForm() {
     }
   }, [logoUrl]);
 
-  // Update store when form values change
+  // Debounced update function
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedUpdate = useCallback(
+    debounce((key: keyof SignatureData, value: string) => {
+      updateField(key, value);
+    }, 300),
+    []
+  );
+
+  // Update store when form values change with debouncing
   useEffect(() => {
     const subscription = watch((values) => {
       // Only update if we have valid data
@@ -87,14 +121,14 @@ export function SignatureForm() {
         Object.entries(values).forEach(([key, value]) => {
           // Only update if the value has actually changed to prevent infinite loops
           if (key in signatureData && value !== undefined && signatureData[key as keyof SignatureData] !== String(value || '')) {
-            updateField(key as keyof SignatureData, String(value || ''));
+            debouncedUpdate(key as keyof SignatureData, String(value || ''));
           }
         });
       }
     });
     
     return () => subscription.unsubscribe();
-  }, [watch, updateField, signatureData]);
+  }, [watch, debouncedUpdate, signatureData]);
 
   // Load saved signatures on mount
   useEffect(() => {
@@ -265,6 +299,67 @@ export function SignatureForm() {
             <p className="text-sm text-gray-500">
               Use a square image with a size of 87 x 113 pixels. Paste a secure HTTPS image URL — uploads not allowed.
             </p>
+          </div>
+
+          {/* Social Media Section */}
+          <div className="pt-4 border-t">
+            <h3 className="text-sm font-semibold text-gray-700 mb-4">Social Media Links (Optional)</h3>
+            
+            {/* LinkedIn */}
+            <div className="space-y-2 mb-4">
+              <Label htmlFor="linkedinUrl">LinkedIn Profile</Label>
+              <Input
+                id="linkedinUrl"
+                {...register('linkedinUrl')}
+                placeholder="https://www.linkedin.com/in/yourprofile"
+                className={errors.linkedinUrl ? 'border-red-500' : ''}
+              />
+              {errors.linkedinUrl && (
+                <p className="text-sm text-red-500">{errors.linkedinUrl.message}</p>
+              )}
+            </div>
+
+            {/* Twitter */}
+            <div className="space-y-2 mb-4">
+              <Label htmlFor="twitterUrl">Twitter/X Profile</Label>
+              <Input
+                id="twitterUrl"
+                {...register('twitterUrl')}
+                placeholder="https://twitter.com/yourhandle"
+                className={errors.twitterUrl ? 'border-red-500' : ''}
+              />
+              {errors.twitterUrl && (
+                <p className="text-sm text-red-500">{errors.twitterUrl.message}</p>
+              )}
+            </div>
+
+            {/* Facebook */}
+            <div className="space-y-2 mb-4">
+              <Label htmlFor="facebookUrl">Facebook Profile</Label>
+              <Input
+                id="facebookUrl"
+                {...register('facebookUrl')}
+                placeholder="https://www.facebook.com/yourprofile"
+                className={errors.facebookUrl ? 'border-red-500' : ''}
+              />
+              {errors.facebookUrl && (
+                <p className="text-sm text-red-500">{errors.facebookUrl.message}</p>
+              )}
+            </div>
+
+            {/* Instagram */}
+            <div className="space-y-2">
+              <Label htmlFor="instagramUrl">Instagram Profile</Label>
+              <Input
+                id="instagramUrl"
+                {...register('instagramUrl')}
+                placeholder="https://www.instagram.com/yourhandle"
+                className={errors.instagramUrl ? 'border-red-500' : ''}
+              />
+              {errors.instagramUrl && (
+                <p className="text-sm text-red-500">{errors.instagramUrl.message}</p>
+              )}
+            </div>
           </div>
         </form>
       </CardContent>

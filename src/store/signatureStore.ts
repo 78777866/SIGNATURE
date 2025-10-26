@@ -12,6 +12,7 @@ interface SignatureStore {
   loadSignature: (signature: SavedSignature) => void;
   saveSignature: (name: string) => void;
   deleteSignature: (id: string) => void;
+  duplicateSignature: (id: string) => void;
   loadSavedSignatures: () => void;
 }
 
@@ -24,6 +25,10 @@ const initialSignatureData: SignatureData = {
   website: '',
   address: '',
   logoUrl: '',
+  linkedinUrl: '',
+  twitterUrl: '',
+  facebookUrl: '',
+  instagramUrl: '',
 };
 
 export const useSignatureStore = create<SignatureStore>((set, get) => ({
@@ -94,6 +99,32 @@ export const useSignatureStore = create<SignatureStore>((set, get) => ({
     const updatedSignatures = savedSignatures.filter(sig => sig.id !== id);
     
     // Update localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('signatures_v1', JSON.stringify(updatedSignatures));
+    }
+
+    set({
+      savedSignatures: updatedSignatures,
+    });
+  },
+
+  duplicateSignature: (id) => {
+    const { savedSignatures } = get();
+    const original = savedSignatures.find(sig => sig.id === id);
+    
+    if (!original) return;
+
+    const duplicate: SavedSignature = {
+      id: crypto.randomUUID(),
+      name: `${original.name} (Copy)`,
+      data: { ...original.data },
+      html: original.html,
+      createdAt: new Date().toISOString(),
+    };
+
+    const updatedSignatures = [...savedSignatures, duplicate];
+    
+    // Save to localStorage
     if (typeof window !== 'undefined') {
       localStorage.setItem('signatures_v1', JSON.stringify(updatedSignatures));
     }

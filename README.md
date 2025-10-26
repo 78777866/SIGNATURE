@@ -8,12 +8,17 @@ Create professional email signatures in seconds. No login required, completely f
 
 ## ✨ Features
 
-- 🚀 **Real-time Preview** - See changes instantly as you type
+- 🚀 **Real-time Preview** - See changes instantly as you type (with debouncing)
 - 🔒 **100% Client-side** - No server required, your data stays private
-- 💾 **Local Storage** - Save signatures locally for later use
+- 💾 **Local Storage** - Save, search, and duplicate signatures locally
 - 📱 **Mobile Responsive** - Works on all devices
 - 🎨 **5+ Professional Templates** - Beautiful, email-client compatible designs
 - 📋 **Easy Export** - Copy HTML or download as file
+- ⌨️ **Keyboard Shortcuts** - Productivity shortcuts for common actions
+- 🔗 **Social Media Support** - Add LinkedIn, Twitter, Facebook, and Instagram links
+- 🔍 **Search & Filter** - Quickly find saved signatures
+- 📑 **Duplicate Signatures** - Clone and modify existing signatures
+- 🛡️ **Error Handling** - Graceful error boundaries for stability
 
 ## 🛠️ Tech Stack
 
@@ -53,6 +58,14 @@ All templates are optimized for Gmail and other email clients.
 - **Copy HTML Code** - Raw HTML for other email clients
 - **Copy JSON** - Data format for backup
 - **Download HTML** - Save as HTML file
+
+## ⌨️ Keyboard Shortcuts
+
+- **Ctrl/⌘ + C** - Copy rendered signature
+- **Ctrl/⌘ + S** - Save signature
+- **Ctrl/⌘ + R** - Reset form
+- **Ctrl/⌘ + D** - Download HTML
+- **Shift + ?** - Show keyboard shortcuts
 
 ## 🛡️ Security
 
